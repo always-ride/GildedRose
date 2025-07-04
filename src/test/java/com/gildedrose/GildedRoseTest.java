@@ -110,4 +110,14 @@ class GildedRoseTest {
         app.updateQuality();
         assertEquals(0, app.items[0].quality);
     }
+
+    /* conjured tests */
+
+    @Test
+    void testConjuresDegradesTwiceAsFast() {
+        Item item = new Item("Conjured Mana Cake", 0, 10);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(6, app.items[0].quality);
+    }
 }
