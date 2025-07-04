@@ -8,6 +8,7 @@ class GildedRoseTest {
 
     private String AGED_BRIE = "Aged Brie";
     private String SULFURAS = "Sulfuras, Hand of Ragnaros";
+    private String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
 
     /* general tests */
 
@@ -74,6 +75,40 @@ class GildedRoseTest {
     @Test
     void testSulfurasQualityNeverDecreases() {
         Item item = new Item(SULFURAS, 0, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(0, item.quality);
+    }
+
+    /* backstage passes tests */
+
+    @Test
+    void testBackstagePassesIncreaseQuality() {
+        Item item = new Item(BACKSTAGE_PASSES, 11, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(1, item.quality);
+    }
+
+    @Test
+    void testBackstagePassesIncreaseQualityBy2WhenSellInIs10OrLess() {
+        Item item = new Item(BACKSTAGE_PASSES, 10, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(2, item.quality);
+    }
+
+    @Test
+    void testBackstagePassesIncreaseQualityBy3WhenSellInIs5OrLess() {
+        Item item = new Item(BACKSTAGE_PASSES, 5, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(3, item.quality);
+    }
+
+    @Test
+    void testBackstagePassesIncreaseQualityIs0WhenSellInIs0() {
+        Item item = new Item(BACKSTAGE_PASSES, 0, 10);
         GildedRose app = new GildedRose(new Item[] { item });
         app.updateQuality();
         assertEquals(0, item.quality);
