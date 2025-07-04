@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GildedRoseTest {
 
     private String AGED_BRIE = "Aged Brie";
+    private String SULFURAS = "Sulfuras, Hand of Ragnaros";
 
     /* general tests */
 
@@ -58,5 +59,23 @@ class GildedRoseTest {
         GildedRose app = new GildedRose(new Item[] { item });
         app.updateQuality();
         assertEquals(2, item.quality);
+    }
+
+    /* sulfuras tests */
+
+    @Test
+    void testSulfurasSellInDoesNotIncrease() {
+        Item item = new Item(SULFURAS, 0, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(0, item.sellIn);
+    }
+
+    @Test
+    void testSulfurasQualityNeverDecreases() {
+        Item item = new Item(SULFURAS, 0, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(0, item.quality);
     }
 }
