@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GildedRoseTest {
 
+    private String AGED_BRIE = "Aged Brie";
+
     /* general tests */
 
     @Test
@@ -38,5 +40,23 @@ class GildedRoseTest {
         GildedRose app = new GildedRose(new Item[] { item });
         app.updateQuality();
         assertEquals(0, item.quality);
+    }
+
+    /* aged brie tests */
+
+    @Test
+    void testItemQualityIsNeverMoreThan50() {
+        Item item = new Item(AGED_BRIE, 0, 50);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(50, item.quality);
+    }
+
+    @Test
+    void testAgedBrieIncreasesQuality() {
+        Item item = new Item(AGED_BRIE, 0, 0);
+        GildedRose app = new GildedRose(new Item[] { item });
+        app.updateQuality();
+        assertEquals(2, item.quality);
     }
 }
