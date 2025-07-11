@@ -15,54 +15,58 @@ public class GildedRose {
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
-            Item item = items[i];
-            
-            if (!item.name.equals(AGED_BRIE)
-                && !item.name.equals(BACKSTAGE_PASSES)) {
-                if (isQualityAboveZero(i)) {
-                    if (!item.name.equals(SULFURAS)) {
-                        decreaseQuality(i);
-                    }
-                }
-            } else {
+            updateItem(items[i], i);
+        }
+    }
+
+    private void updateItem(Item item, int i) {
+        if (item.name.equals(AGED_BRIE)) {
+            if (isQualityBelowMaxValue(i)) {
+                increaseQuality(i);
+            }
+        }
+        else if (item.name.equals(BACKSTAGE_PASSES)) {
+            if (isQualityBelowMaxValue(i)) {
+                increaseQuality(i);
+            }
+            if (item.sellIn < 11) {
                 if (isQualityBelowMaxValue(i)) {
                     increaseQuality(i);
-
-                    if (item.name.equals(BACKSTAGE_PASSES)) {
-                        if (item.sellIn < 11) {
-                            if (isQualityBelowMaxValue(i)) {
-                                increaseQuality(i);
-                            }
-                        }
-
-                        if (item.sellIn < 6) {
-                            if (isQualityBelowMaxValue(i)) {
-                                increaseQuality(i);
-                            }
-                        }
-                    }
                 }
             }
 
-            if (!item.name.equals(SULFURAS)) {
-                decreaseSellIn(i);
+            if (item.sellIn < 6) {
+                if (isQualityBelowMaxValue(i)) {
+                    increaseQuality(i);
+                }
             }
+        }
+        else {
+            if (isQualityAboveZero(i)) {
+                if (!item.name.equals(SULFURAS)) {
+                    decreaseQuality(i);
+                }
+            }
+        }
 
+        if (!item.name.equals(SULFURAS)) {
+            decreaseSellIn(i);
+        }
+
+        if (item.name.equals(AGED_BRIE)) {
             if (item.sellIn < 0) {
-                if (!item.name.equals(AGED_BRIE)) {
-                    if (!item.name.equals(BACKSTAGE_PASSES)) {
-                        if (isQualityAboveZero(i)) {
-                            if (!item.name.equals(SULFURAS)) {
-                                decreaseQuality(i);
-                            }
-                        }
-                    } else {
-                        item.quality = 0;
-                    }
-                } else {
-                    if (isQualityBelowMaxValue(i)) {
-                        increaseQuality(i);
-                    }
+                if (isQualityBelowMaxValue(i)) {
+                    increaseQuality(i);
+                }
+            }
+        } else if (item.name.equals(BACKSTAGE_PASSES)) {
+            if (item.sellIn < 0) {
+                item.quality = 0;
+            }
+        } else if (!item.name.equals(SULFURAS)) {
+            if (item.sellIn < 0) {
+                if (isQualityAboveZero(i)) {
+                    decreaseQuality(i);
                 }
             }
         }
