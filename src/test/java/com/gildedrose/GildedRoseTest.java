@@ -44,7 +44,7 @@ class GildedRoseTest {
     /* aged brie tests */
 
     @Test
-    void testItemQualityIsNeverMoreThan50() {
+    void testAgedBrieQualityIsNeverMoreThan50() {
         Item item = new Item(AGED_BRIE, 0, 50);
         GildedRose app = new GildedRose(new Item[] { item });
         app.updateQuality();
@@ -104,7 +104,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void testBackstagePassesIncreaseQualityIs0WhenSellInIs0() {
+    void testBackstagePassesQualityIs0WhenSellInIs0() {
         Item item = new Item(BACKSTAGE_PASSES, 0, 10);
         GildedRose app = new GildedRose(new Item[] { item });
         app.updateQuality();
