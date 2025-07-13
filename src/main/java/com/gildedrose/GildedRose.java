@@ -1,6 +1,7 @@
 
 package com.gildedrose;
 
+import java.util.Map;
 import java.util.function.Function;
 
 public class GildedRose {
@@ -41,6 +42,12 @@ public class GildedRose {
         return item;
     };
 
+    Map<String, Function<Item, Item>> itemUpdaters = Map.of(
+            AGED_BRIE, agedBrieUpdater,
+            BACKSTAGE_PASSES, backstagePassUpdater,
+            SULFURAS, sulfurasUpdater
+    );
+
     public GildedRose(Item[] items) {
         this.items = items;
     }
@@ -48,21 +55,9 @@ public class GildedRose {
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
-
-            switch (item.name) {
-                case AGED_BRIE:
-                    agedBrieUpdater.apply(item);
-                    break;
-                case BACKSTAGE_PASSES:
-                    backstagePassUpdater.apply(item);
-                    break;
-                case SULFURAS:
-                    sulfurasUpdater.apply(item);
-                    break;
-                default:
-                    defaultUpdater.apply(item);
-                    break;
-            }
+            itemUpdaters
+                    .getOrDefault(item.name, defaultUpdater)
+                    .apply(item);
         }
     }
 
