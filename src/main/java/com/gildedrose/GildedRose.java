@@ -1,6 +1,7 @@
 
 package com.gildedrose;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -53,12 +54,9 @@ public class GildedRose {
     }
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            Item item = items[i];
-            itemUpdaters
-                    .getOrDefault(item.name, defaultUpdater)
-                    .apply(item);
-        }
+        Arrays.stream(items).forEach(item -> itemUpdaters
+                .getOrDefault(item.name, defaultUpdater)
+                .apply(item));
     }
 
     private static void decreaseQuality(Item item) {
