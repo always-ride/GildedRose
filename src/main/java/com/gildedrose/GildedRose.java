@@ -17,49 +17,51 @@ public class GildedRose {
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
 
-            if (item.name.equals(AGED_BRIE)) {
-                item.sellIn = item.sellIn - 1;
+            switch (item.name) {
+                case AGED_BRIE:
+                    item.sellIn = item.sellIn - 1;
 
-                increaseQuality(item);
-            }
-            else if (item.name.equals(BACKSTAGE_PASSES)) {
-                item.sellIn = item.sellIn - 1;
-
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
-
-                    if (item.sellIn < 10) {
-                        increaseQuality(item);
-                    }
-
-                    if (item.sellIn < 5) {
-                        increaseQuality(item);
-                    }
-                }
-            } else if (item.name.equals(SULFURAS)) {
-                // do nothing
-            }
-            else {
-                item.sellIn = item.sellIn - 1;
-
-                if (item.quality > 0) {
-                    item.quality = item.quality - 1;
-                }
-            }
-
-            if (item.sellIn < 0) {
-                if (item.name.equals(AGED_BRIE)) {
                     increaseQuality(item);
-                } else if (item.name.equals(BACKSTAGE_PASSES)) {
-                    item.quality = 0;
-                } else if (item.name.equals(SULFURAS)) {
+
+                    if (item.sellIn < 0) {
+                        increaseQuality(item);
+                    }
+                    break;
+                case BACKSTAGE_PASSES:
+                    item.sellIn = item.sellIn - 1;
+
+                    if (item.quality < 50) {
+                        item.quality = item.quality + 1;
+
+                        if (item.sellIn < 10) {
+                            increaseQuality(item);
+                        }
+
+                        if (item.sellIn < 5) {
+                            increaseQuality(item);
+                        }
+                    }
+
+                    if (item.sellIn < 0) {
+                        item.quality = 0;
+                    }
+                    break;
+                case SULFURAS:
                     // do nothing
-                }
-                else {
+                    break;
+                default:
+                    item.sellIn = item.sellIn - 1;
+
                     if (item.quality > 0) {
                         item.quality = item.quality - 1;
                     }
-                }
+
+                    if (item.sellIn < 0) {
+                        if (item.quality > 0) {
+                            item.quality = item.quality - 1;
+                        }
+                    }
+                    break;
             }
         }
     }
