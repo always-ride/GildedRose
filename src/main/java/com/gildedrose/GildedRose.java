@@ -1,6 +1,8 @@
 
 package com.gildedrose;
 
+import java.util.function.Function;
+
 public class GildedRose {
 
     public static final String AGED_BRIE = "Aged Brie";
@@ -8,6 +10,36 @@ public class GildedRose {
     public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
 
     Item[] items;
+
+    Function<Item, Item> agedBrieUpdater = item -> {
+        item.sellIn = item.sellIn - 1;
+        increaseQuality(item);
+        if (item.sellIn < 0)
+            increaseQuality(item);
+        return item;
+    };
+
+    Function<Item, Item> backstagePassUpdater = item -> {
+        item.sellIn = item.sellIn - 1;
+        increaseQuality(item);
+        if (item.sellIn < 10)
+            increaseQuality(item);
+        if (item.sellIn < 5)
+            increaseQuality(item);
+        if (item.sellIn < 0)
+            item.quality = 0;
+        return item;
+    };
+
+    Function<Item, Item> sulfurasUpdater = item -> item;
+
+    Function<Item, Item> defaultUpdater = item -> {
+        item.sellIn = item.sellIn - 1;
+        decreaseQuality(item);
+        if (item.sellIn < 0)
+            decreaseQuality(item);
+        return item;
+    };
 
     public GildedRose(Item[] items) {
         this.items = items;
@@ -19,42 +51,16 @@ public class GildedRose {
 
             switch (item.name) {
                 case AGED_BRIE:
-                    item.sellIn = item.sellIn - 1;
-
-                    increaseQuality(item);
-
-                    if (item.sellIn < 0) {
-                        increaseQuality(item);
-                    }
+                    agedBrieUpdater.apply(item);
                     break;
                 case BACKSTAGE_PASSES:
-                    item.sellIn = item.sellIn - 1;
-
-                    increaseQuality(item);
-
-                    if (item.sellIn < 10) {
-                        increaseQuality(item);
-                    }
-
-                    if (item.sellIn < 5) {
-                        increaseQuality(item);
-                    }
-
-                    if (item.sellIn < 0) {
-                        item.quality = 0;
-                    }
+                    backstagePassUpdater.apply(item);
                     break;
                 case SULFURAS:
-                    // do nothing
+                    sulfurasUpdater.apply(item);
                     break;
                 default:
-                    item.sellIn = item.sellIn - 1;
-
-                    decreaseQuality(item);
-
-                    if (item.sellIn < 0) {
-                        decreaseQuality(item);
-                    }
+                    defaultUpdater.apply(item);
                     break;
             }
         }
