@@ -115,7 +115,7 @@ class GildedRoseTest {
 
     @Test
     void testConjuresDegradesTwiceAsFast() {
-        Item item = new Item("Conjured Mana Cake", 0, 10);
+        Item item = new Item(CONJURED, 0, 10);
         GildedRose app = new GildedRose(new Item[] { item });
         app.updateQuality();
         assertEquals(6, app.items[0].quality);
