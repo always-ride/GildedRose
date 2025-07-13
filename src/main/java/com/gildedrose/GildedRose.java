@@ -18,17 +18,21 @@ public class GildedRose {
             Item item = items[i];
 
             if (item.name.equals(AGED_BRIE)) {
+                item.sellIn = item.sellIn - 1;
+
                 increaseQuality(item);
             }
             else if (item.name.equals(BACKSTAGE_PASSES)) {
+                item.sellIn = item.sellIn - 1;
+
                 if (item.quality < 50) {
                     item.quality = item.quality + 1;
 
-                    if (item.sellIn < 11) {
+                    if (item.sellIn < 10) {
                         increaseQuality(item);
                     }
 
-                    if (item.sellIn < 6) {
+                    if (item.sellIn < 5) {
                         increaseQuality(item);
                     }
                 }
@@ -36,16 +40,11 @@ public class GildedRose {
                 // do nothing
             }
             else {
+                item.sellIn = item.sellIn - 1;
+
                 if (item.quality > 0) {
                     item.quality = item.quality - 1;
                 }
-            }
-
-            if (item.name.equals(SULFURAS)) {
-                // do nothing
-            }
-            else {
-                item.sellIn = item.sellIn - 1;
             }
 
             if (item.sellIn < 0) {
