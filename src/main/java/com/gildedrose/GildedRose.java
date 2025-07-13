@@ -13,35 +13,25 @@ public class GildedRose {
 
     Item[] items;
 
-    Function<Item, Item> agedBrieUpdater = item -> {
-        item.sellIn = item.sellIn - 1;
-        increaseQuality(item);
-        if (item.sellIn < 0)
-            increaseQuality(item);
-        return item;
-    };
+    Function<Item, Item> agedBrieUpdater = item -> new Item(
+            item.name,
+            item.sellIn - 1,
+            Math.min(50, item.quality + (item.sellIn <= 0 ? 2 : 1)));
 
-    Function<Item, Item> backstagePassUpdater = item -> {
-        item.sellIn = item.sellIn - 1;
-        increaseQuality(item);
-        if (item.sellIn < 10)
-            increaseQuality(item);
-        if (item.sellIn < 5)
-            increaseQuality(item);
-        if (item.sellIn < 0)
-            item.quality = 0;
-        return item;
-    };
+    Function<Item, Item> backstagePassUpdater = item -> new Item(
+            item.name,
+            item.sellIn - 1,
+            Math.min(50, item.sellIn <= 0 ? 0 : item.quality + (item.sellIn <= 5 ? 3 : item.sellIn <= 10 ? 2 : 1)));
 
-    Function<Item, Item> sulfurasUpdater = item -> item;
+    Function<Item, Item> sulfurasUpdater = item -> new Item(
+            item.name,
+            item.sellIn,
+            item.quality);
 
-    Function<Item, Item> defaultUpdater = item -> {
-        item.sellIn = item.sellIn - 1;
-        decreaseQuality(item);
-        if (item.sellIn < 0)
-            decreaseQuality(item);
-        return item;
-    };
+    Function<Item, Item> defaultUpdater = item -> new Item(
+            item.name,
+            item.sellIn - 1,
+            Math.max(0, item.quality - (item.sellIn <= 0 ? 2 : 1)));
 
     Map<String, Function<Item, Item>> itemUpdaters = Map.of(
             AGED_BRIE, agedBrieUpdater,
@@ -54,20 +44,10 @@ public class GildedRose {
     }
 
     public void updateQuality() {
-        Arrays.stream(items).forEach(item -> itemUpdaters
-                .getOrDefault(item.name, defaultUpdater)
-                .apply(item));
-    }
-
-    private static void decreaseQuality(Item item) {
-        if (item.quality > 0) {
-            item.quality = item.quality - 1;
-        }
-    }
-
-    private static void increaseQuality(Item item) {
-        if (item.quality < 50) {
-            item.quality = item.quality + 1;
-        }
+        items = Arrays.stream(items)
+                .map(item -> itemUpdaters
+                    .getOrDefault(item.name, defaultUpdater)
+                    .apply(item))
+                .toArray(Item[]::new);
     }
 }
