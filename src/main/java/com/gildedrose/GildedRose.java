@@ -29,6 +29,11 @@ public class GildedRose {
             item.sellIn,
             item.quality);
 
+    Function<Item, Item> conjuredUpdater = item -> new Item(
+            item.name,
+            item.sellIn - 1,
+            Math.max(0, item.quality - (item.sellIn <= 0 ? 4 : 2)));
+
     Function<Item, Item> defaultUpdater = item -> new Item(
             item.name,
             item.sellIn - 1,
@@ -37,7 +42,8 @@ public class GildedRose {
     Map<String, Function<Item, Item>> itemUpdaters = Map.of(
             AGED_BRIE, agedBrieUpdater,
             BACKSTAGE_PASSES, backstagePassUpdater,
-            SULFURAS, sulfurasUpdater
+            SULFURAS, sulfurasUpdater,
+            CONJURED, conjuredUpdater
     );
 
     public GildedRose(Item[] items) {
