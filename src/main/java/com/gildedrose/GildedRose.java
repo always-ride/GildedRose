@@ -30,16 +30,14 @@ public class GildedRose {
                 case BACKSTAGE_PASSES:
                     item.sellIn = item.sellIn - 1;
 
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1;
+                    increaseQuality(item);
 
-                        if (item.sellIn < 10) {
-                            increaseQuality(item);
-                        }
+                    if (item.sellIn < 10) {
+                        increaseQuality(item);
+                    }
 
-                        if (item.sellIn < 5) {
-                            increaseQuality(item);
-                        }
+                    if (item.sellIn < 5) {
+                        increaseQuality(item);
                     }
 
                     if (item.sellIn < 0) {
@@ -52,17 +50,19 @@ public class GildedRose {
                 default:
                     item.sellIn = item.sellIn - 1;
 
-                    if (item.quality > 0) {
-                        item.quality = item.quality - 1;
-                    }
+                    decreaseQuality(item);
 
                     if (item.sellIn < 0) {
-                        if (item.quality > 0) {
-                            item.quality = item.quality - 1;
-                        }
+                        decreaseQuality(item);
                     }
                     break;
             }
+        }
+    }
+
+    private static void decreaseQuality(Item item) {
+        if (item.quality > 0) {
+            item.quality = item.quality - 1;
         }
     }
 
